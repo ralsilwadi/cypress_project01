@@ -39,7 +39,6 @@ describe("Homework01", () => {
 
     cy.get(".radio input").eq(0).click();
     cy.get(".radio").each(($el, index) => {
-      cy.log($el.text());
       if ($el.text() === "Male") cy.wrap($el).children().should("be.checked");
       else cy.wrap($el).children().should("not.be.checked");
     });

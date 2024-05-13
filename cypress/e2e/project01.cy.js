@@ -34,7 +34,7 @@ describe("Homework01", () => {
 
     cy.get(".radio").each(($el, index) => {
       cy.wrap($el).should("have.text", buttons[index]);
-      cy.wrap($el).children().should("be.enabled").and("not.be.selected");
+      cy.wrap($el).children().should("be.enabled").and("not.be.checked");
     });
 
     cy.get(".radio input").eq(0).click();

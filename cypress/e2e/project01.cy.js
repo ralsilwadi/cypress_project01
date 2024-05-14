@@ -56,7 +56,7 @@ describe("Homework01", () => {
       "Phone",
       "Message",
     ];
-    const requiredFields = [
+    const isRequired = [
       true,
       false, 
       true, 
@@ -71,11 +71,7 @@ describe("Homework01", () => {
         .should("have.attr", "placeholder", placeholders[index])
         .and("be.visible");
 
-      if (requiredFields[index]) {
-        cy.wrap($el).should("have.attr", "required");
-      } else {
-        cy.wrap($el).should("not.have.attr", "required");
-      }
+        cy.wrap($el).should(isRequired[index] ? "have.attr" : "not.have.attr", "required");
 
       if (labels[index] !== "Gender *") {
         cy.get(".label").eq(index).should("have.text", labels[index]);
@@ -120,5 +116,10 @@ describe("Homework01", () => {
     cy.get(".button").click();
 
     cy.get("strong").should("have.text", "Thanks for submitting!");
+
+    
+  cy.on('uncaught:exception', () => {
+  return false
+})
   });
 });

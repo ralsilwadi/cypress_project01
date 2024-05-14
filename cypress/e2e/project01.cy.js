@@ -15,16 +15,6 @@ describe("Homework01", () => {
     cy.get("#phone-number").should("have.text", "(224) 580-2150");
   });
 
-  it("Test Case 02 - Validate the Full name input box", () => {
-    cy.get(".field > label").eq(0).should("have.text", "Full name *");
-
-    cy.get(".control >.input")
-      .eq(0)
-      .should("have.attr", "placeholder", "Enter your full name")
-      .and("be.visible")
-      .and("have.attr", "required");
-  });
-
   it("Test Case 03 - Validate the Gender radio button", () => {
     const buttons = ["Male", "Female", "Prefer not to disclose"];
 
@@ -50,43 +40,47 @@ describe("Homework01", () => {
     });
   });
 
-  it("Test Case 04 - Validate the Address input box", () => {
-    cy.get(".control > .input")
-      .eq(1)
-      .should("have.attr", "placeholder", "Enter your address")
-      .and("be.visible")
-      .and("not.have.attr", "required");
+  it("Test Case 02-07 (skip 3) - Validate the input boxes", () => {
+    const placeholders = [
+      "Enter your full name",
+      "Enter your address",
+      "Enter your email",
+      "Enter your phone number",
+      "Type your message here...",
+    ];
+    const labels = [
+      "Full name *",
+      "Gender *",
+      "Address",
+      "Email *",
+      "Phone",
+      "Message",
+    ];
+    const requiredFields = [
+      true,
+      false, 
+      true, 
+      false, 
+      false,
+    ];
 
-    cy.get(".label").eq(2).should("have.text", "Address");
-  });
+    const inputs = cy.get(".control > .input, .textarea");
 
-  it("Test Case 05 - Validate the Email input box", () => {
-    cy.get(".control > .input")
-      .eq(2)
-      .should("have.attr", "placeholder", "Enter your email")
-      .and("be.visible")
-      .and("have.attr", "required");
+    inputs.each(($el, index) => {
+      cy.wrap($el)
+        .should("have.attr", "placeholder", placeholders[index])
+        .and("be.visible");
 
-    cy.get(".label").eq(3).should("have.text", "Email *");
-  });
+      if (requiredFields[index]) {
+        cy.wrap($el).should("have.attr", "required");
+      } else {
+        cy.wrap($el).should("not.have.attr", "required");
+      }
 
-  it("Test Case 06 - Validate the Phone input box", () => {
-    cy.get(".control > .input")
-      .eq(3)
-      .should("have.attr", "placeholder", "Enter your phone number")
-      .and("be.visible")
-      .and("not.have.attr", "required");
-
-    cy.get(".label").eq(4).should("have.text", "Phone");
-  });
-
-  it("Test Case 07 - Validate the Message text area", () => {
-    cy.get(".textarea")
-      .should("have.attr", "placeholder", "Type your message here...")
-      .and("be.visible")
-      .and("not.have.attr", "required");
-
-    cy.get(".label").eq(5).should("have.text", "Message");
+      if (labels[index] !== "Gender *") {
+        cy.get(".label").eq(index).should("have.text", labels[index]);
+      } 
+    });
   });
 
   it("Test Case 08 - Validate the Consent checkbox", () => {
@@ -121,10 +115,10 @@ describe("Homework01", () => {
 
     cy.get(".textarea").type("Hello, World :)");
 
-    cy.get('.checkbox > input').click()
+    cy.get(".checkbox > input").click();
 
-    cy.get(".button").click()
+    cy.get(".button").click();
 
-    cy.get('strong').should('have.text', 'Thanks for submitting!')
+    cy.get("strong").should("have.text", "Thanks for submitting!");
   });
 });
